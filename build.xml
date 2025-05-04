@@ -1,0 +1,43 @@
+<project name="ChatApplication" default="build-all" basedir=".">
+    <property name="src.dir" location="src"/>
+    <property name="build.dir" location="build"/>
+    <property name="dist.dir" location="dist"/>
+    
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+    
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+    </target>
+    
+    <target name="build-server" depends="compile">
+        <jar destfile="${dist.dir}/Server.jar">
+            <fileset dir="${build.dir}"/>
+            <fileset dir="${src.dir}"/>
+            <manifest>
+                <attribute name="Main-Class" value="Server.ServerForm"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="build-client" depends="compile">
+        <jar destfile="${dist.dir}/Client.jar">
+            <fileset dir="${build.dir}"/>
+            <fileset dir="${src.dir}"/>
+            <manifest>
+                <attribute name="Main-Class" value="Client.LoginForm"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="build-all" depends="build-server, build-client">
+        <echo>Built both server and client JARs</echo>
+    </target>
+    
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+</project>
